@@ -44,6 +44,7 @@ namespace D2RAssist.Types
                 public static readonly Color Waypoint = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["Waypoint"]);
                 public static readonly Color Player = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["Player"]);
                 public static readonly Color SuperChest = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["SuperChest"]);
+                public static readonly Color Chest = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["Chest"]);
                 public static readonly Color ArrowExit = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["ArrowExit"]);
                 public static readonly Color ArrowQuest = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["ArrowQuest"]);
                 public static readonly Color ArrowWaypoint = ColorTranslator.FromHtml(ConfigurationManager.AppSettings["ArrowWaypoint"]);

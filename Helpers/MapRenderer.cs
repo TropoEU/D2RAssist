@@ -43,6 +43,7 @@ namespace D2RAssist.Helpers
             public static readonly Bitmap Waypoint = CreateFilledRectangle(Settings.Map.Colors.Waypoint, 10, 10);
             public static readonly Bitmap Player = CreateFilledEllipse(Settings.Map.Colors.Player, 10, 10);
             public static readonly Bitmap SuperChest = CreateFilledEllipse(Settings.Map.Colors.SuperChest, 10, 10);
+            public static readonly Bitmap Chest = CreateFilledEllipse(Settings.Map.Colors.Chest, 10, 10);
         }
 
         public static class MapPointsOfInterest
@@ -151,6 +152,7 @@ namespace D2RAssist.Helpers
                 counter++;
             }
 
+            List<Point> chestPoints = new List<Point>();
             foreach (KeyValuePair<string, XY[]> mapObject in mapData.objects)
             {
                 int coordX = MultiplyIntByDouble(mapData.objects[mapObject.Key][0].x - originX, multiplier);
@@ -169,10 +171,39 @@ namespace D2RAssist.Helpers
                 {
                     foreach (XY coordinates in mapData.objects[mapObject.Key])
                     {
-                        coordX = MultiplyIntByDouble(coordinates.x - originX, multiplier);
-                        coordY = MultiplyIntByDouble(coordinates.y - originY, multiplier);
-                        mapObjectPoint = new Point(coordX, coordY);
-                        CachedBackgroundGraphics.DrawImage(Icons.SuperChest, mapObjectPoint);
+                        coordX = MultiplyIntByDouble (coordinates.x - originX, multiplier);
+                        coordY = MultiplyIntByDouble (coordinates.y - originY, multiplier);
+                        mapObjectPoint = new Point (coordX, coordY);
+
+                        if (Globals.CurrentGameData.AreaId == Game.Area.LowerKurast) {
+                            chestPoints.Add (mapObjectPoint);
+                        } else {
+                            CachedBackgroundGraphics.DrawImage (Icons.Chest, mapObjectPoint);
+                        }
+                    }
+                }
+            }
+
+            if (Globals.CurrentGameData.AreaId == Game.Area.LowerKurast) {
+                List<int> objectIndexToDraw = new List<int>();
+                for (int i = 0 ; i < chestPoints.Count ; i++) {
+                    if (objectIndexToDraw.Contains (i)) {
+                        continue;
+                    }
+                    Point p1 = chestPoints[i];
+                    for (int j = 0 ; j < chestPoints.Count ; j++) {
+                        if (objectIndexToDraw.Contains (j))
+                            continue;
+                        Point p2 = chestPoints[j];
+                        double distance = Math.Sqrt(Math.Pow(p1.X-p2.X,2)+Math.Pow(p1.Y-p2.Y,2));
+                        Console.WriteLine (distance);
+                        if (distance > 10 && distance < 28) {
+                            objectIndexToDraw.Add (i);
+                            objectIndexToDraw.Add (j);
+                        }
+                    }
+                    if (objectIndexToDraw.Contains (i)) {
+                        CachedBackgroundGraphics.DrawImage (Icons.SuperChest, chestPoints[i]);
                     }
                 }
             }

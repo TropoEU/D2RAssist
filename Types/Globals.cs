@@ -32,5 +32,7 @@ namespace D2RAssist.Types
         public static GameData CurrentGameData { get; set; }
         public static GameData LastGameData { get; set; }
         public static Bitmap MapBackground { get; set; }
+        public static Point MinimapPlayerPosition { get; set; }
+        public static Point MinimapBaseSize { get; set; }
     }
 }

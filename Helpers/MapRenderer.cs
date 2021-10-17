@@ -121,10 +121,11 @@ namespace D2RAssist.Helpers
 
             int miniMapPlayerX = (int)((Globals.CurrentGameData.PlayerX - mapData.levelOrigin.x) * multiplier);
             int miniMapPlayerY = (int)((Globals.CurrentGameData.PlayerY - mapData.levelOrigin.y) * multiplier);
-            Point playerPoint = new Point(miniMapPlayerX, miniMapPlayerY);
             updatedMap = ImageManipulation.ResizeImage((Bitmap)CachedBackground.Clone(), (int)(CachedBackground.Width * multiplier), (int)(CachedBackground.Height * multiplier));
             CachedBackgroundGraphics = Graphics.FromImage(updatedMap);
-            DrawArrows(miniMapPlayerX, miniMapPlayerY, CachedBackgroundGraphics, multiplier, mapData);
+            Globals.MinimapPlayerPosition = new Point (miniMapPlayerX, miniMapPlayerY);
+            Globals.MinimapBaseSize = new Point ((int)(CachedBackground.Width * multiplier), (int)(CachedBackground.Height * multiplier));
+            DrawArrows (miniMapPlayerX, miniMapPlayerY, CachedBackgroundGraphics, multiplier, mapData);
 
             int counter = 0;
             int originX = mapData.levelOrigin.x;
@@ -208,11 +209,11 @@ namespace D2RAssist.Helpers
                 }
             }
 
-            CachedBackgroundGraphics.DrawImage(Icons.Player, playerPoint);
+            CachedBackgroundGraphics.DrawImage(Icons.Player, Globals.MinimapPlayerPosition);
 
-            if (Settings.Map.Rotate)
+            if (Settings.Map.Rotate != 0)
             {
-                updatedMap = ImageManipulation.RotateImage(updatedMap, 53, true, false, Color.Transparent);
+                updatedMap = ImageManipulation.RotateImage (updatedMap, Settings.Map.Rotate, true, false, Color.Transparent);
             }
 
             return updatedMap;

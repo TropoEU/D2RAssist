@@ -75,6 +75,7 @@ namespace D2RAssist
         {
             Timer timer = sender as Timer;
             timer.Stop();
+            Console.WriteLine ("updating map");
 
             Globals.CurrentGameData = GameMemory.GetGameData();
 
@@ -134,6 +135,8 @@ namespace D2RAssist
 
         private bool D2RProcessInForeground()
         {
+            if (Settings.Map.DebugMode)
+                return true;
             IntPtr activeWindowHandle = WindowsExternal.GetForegroundWindow();
             return activeWindowHandle == Globals.CurrentGameData.MainWindowHandle;
         }
@@ -150,14 +153,36 @@ namespace D2RAssist
 
             Bitmap gameMap = MapRenderer.FromMapData(Globals.MapData);
             Point anchor = new Point(0, 0);
+            int screenCenterX = (_screen.WorkingArea.Width - gameMap.Width) / 2;
+            int screenCenterY = (_screen.WorkingArea.Height - gameMap.Height) / 2;
             switch (Settings.Map.MapPosition) {
+                case MapPosition.Middle:
+                    //Set the offset according to player position
+                    anchor = new Point (screenCenterX, screenCenterY);
+                    break;
                 case MapPosition.TopRight:
-                    anchor = new Point(_screen.WorkingArea.Width - gameMap.Width, 0);
+                    anchor = new Point (_screen.WorkingArea.Width - gameMap.Width, 0);
                     break;
                 case MapPosition.TopLeft:
-                    anchor = new Point(0, 0);
+                    anchor = new Point (0, 0);
                     break;
             }
+
+            if (Settings.Map.AutoScroll) {
+                if (Settings.Map.Rotate != 0) {
+                    int oldX = Globals.MinimapPlayerPosition.X - (Globals.MinimapBaseSize.X/2);
+                    int oldY = Globals.MinimapPlayerPosition.Y - (Globals.MinimapBaseSize.Y/2);
+                    int newX = (int)Math.Round(oldX * Math.Cos (Settings.Map.Rotate) + oldY * Math.Sin (Settings.Map.Rotate));
+                    int newY = (int)Math.Round (-oldX * Math.Sin (Settings.Map.Rotate) + oldY * Math.Cos (Settings.Map.Rotate));
+
+                    anchor.X += newX;
+                    anchor.Y += newY;
+                } else {
+                    anchor.X = (_screen.WorkingArea.Width / 2) - Globals.MinimapPlayerPosition.X;
+                    anchor.Y = (_screen.WorkingArea.Height / 2) - Globals.MinimapPlayerPosition.Y;
+                }
+            }
+
             e.Graphics.DrawImage(gameMap, anchor);
         }
 

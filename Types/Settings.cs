@@ -28,6 +28,7 @@ namespace D2RAssist.Types
 {
     public enum MapPosition
     {
+        Middle,
         TopLeft,
         TopRight
     }
@@ -78,12 +79,14 @@ namespace D2RAssist.Types
             public static int Size = Convert.ToInt16(ConfigurationManager.AppSettings["Size"]);
             public static MapPosition MapPosition = (MapPosition)Convert.ToInt16(ConfigurationManager.AppSettings["MapPosition"]);
             public static int UpdateTime = Convert.ToInt16(ConfigurationManager.AppSettings["UpdateTime"]);
-            public static bool Rotate = Convert.ToBoolean(ConfigurationManager.AppSettings["Rotate"]);
+            public static int Rotate = Convert.ToInt16(ConfigurationManager.AppSettings["Rotate"]);
+            public static bool AutoScroll = Convert.ToBoolean(ConfigurationManager.AppSettings["AutoScroll"]);
             public static string LabelFont = ConfigurationManager.AppSettings["LabelFont"];
             public static int ArrowThickness = Convert.ToInt16(ConfigurationManager.AppSettings["ArrowThickness"]);
             public static bool DrawExitArrow = Convert.ToBoolean(ConfigurationManager.AppSettings["DrawExitArrow"]);
             public static bool DrawQuestArrow = Convert.ToBoolean(ConfigurationManager.AppSettings["DrawQuestArrow"]);
             public static bool DrawWaypointArrow = Convert.ToBoolean(ConfigurationManager.AppSettings["DrawWaypointArrow"]);
+            public static bool DebugMode = Convert.ToBoolean(ConfigurationManager.AppSettings["DebugMode"]);
         }
 
         public static class Api

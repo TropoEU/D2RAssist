@@ -75,7 +75,6 @@ namespace D2RAssist
         {
             Timer timer = sender as Timer;
             timer.Stop();
-            Console.WriteLine ("updating map");
 
             Globals.CurrentGameData = GameMemory.GetGameData();
 

@@ -255,7 +255,9 @@ namespace D2RAssist.Helpers
 
                 // Draw arrow
                 pen.Color = Settings.Map.Colors.ArrowExit;
-                minimap.DrawLine(pen, miniMapPlayerX, miniMapPlayerY, coordX, coordY);
+                if (i.Key.toArea ().IsForward()) {
+                    minimap.DrawLine(pen, miniMapPlayerX, miniMapPlayerY, coordX, coordY);
+                }
                 // Draw label
                 DrawLabelAt("Area", i.Key, coordX, coordY, minimap);
             }

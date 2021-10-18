@@ -118,6 +118,11 @@ namespace D2RAssist.Helpers
                     break;
             }
             return false;
+        public static bool IsWaypoint(this GameObject obj) => obj.ToString().Contains("Waypoint");
+
+        public static Point OffsetFrom(this Point point, Point offset)
+        {
+            return new Point(point.X - offset.X, point.Y - offset.Y);
         }
     }
 }

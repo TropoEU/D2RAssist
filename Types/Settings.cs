@@ -30,7 +30,8 @@ namespace D2RAssist.Types
     public enum MapPosition
     {
         TopLeft,
-        TopRight
+        TopRight,
+        Center
     }
 
     public enum Shape
@@ -95,6 +96,8 @@ namespace D2RAssist.Types
 
             public static MapPosition Position =
                 (MapPosition)Enum.Parse(typeof(MapPosition), ConfigurationManager.AppSettings["MapPosition"], true);
+
+            public static bool AutoScroll = Convert.ToBoolean(ConfigurationManager.AppSettings["AutoScroll"]);
 
             public static int UpdateTime = Convert.ToInt16(ConfigurationManager.AppSettings["UpdateTime"]);
             public static bool Rotate = Convert.ToBoolean(ConfigurationManager.AppSettings["Rotate"]);

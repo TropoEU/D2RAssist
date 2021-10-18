@@ -62,6 +62,7 @@ namespace D2RAssist.Helpers
                 imageGraphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
                 Point localPlayerPosition = gameData.PlayerPosition.OffsetFrom(_areaData.Origin).OffsetFrom(_cropOffset);
+                Globals.PlayerCoordinatesOnMap = localPlayerPosition;
 
                 if (Settings.Rendering.Player.CanDrawIcon())
                 {
@@ -107,7 +108,7 @@ namespace D2RAssist.Helpers
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (Settings.Map.Rotate)
             {
-                image = ImageUtils.RotateImage(image, 53, true, false, Color.Transparent);
+                image = ImageUtils.RotateImage(image, 34, true, false, Color.Transparent);
             }
 
             return image;

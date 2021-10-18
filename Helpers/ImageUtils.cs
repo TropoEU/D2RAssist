@@ -117,6 +117,7 @@ namespace D2RAssist.Helpers
             // Create a new bitmap from the crop rectangle
             var cropRectangle = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
             var newBitmap = new Bitmap(cropRectangle.Width, cropRectangle.Height);
+            Globals.MinimapBaseSize = new Point (cropRectangle.Width, cropRectangle.Height);
             using (Graphics g = Graphics.FromImage(newBitmap))
             {
                 g.DrawImage(originalBitmap, 0, 0, cropRectangle, GraphicsUnit.Pixel);

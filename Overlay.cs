@@ -157,14 +157,35 @@ namespace D2RAssist
 
             Bitmap gameMap = _compositor.Compose(_currentGameData);
             var anchor = new Point(0, 0);
+            int screenCenterX = (_screen.WorkingArea.Width - gameMap.Width) / 2;
+            int screenCenterY = (_screen.WorkingArea.Height - gameMap.Height) / 2;
             switch (Settings.Map.Position)
             {
+                case MapPosition.Center:
+                    //Set the offset according to player position
+                    anchor = new Point (screenCenterX, screenCenterY);
+                    break;
                 case MapPosition.TopRight:
                     anchor = new Point(_screen.WorkingArea.Width - gameMap.Width, 0);
                     break;
                 case MapPosition.TopLeft:
                     anchor = new Point(0, 0);
                     break;
+            }
+
+            if (Settings.Map.AutoScroll) {
+                if (Settings.Map.Rotate) {
+                    int oldX = Globals.PlayerCoordinatesOnMap.X - (Globals.MinimapBaseSize.X/2);
+                    int oldY = Globals.PlayerCoordinatesOnMap.Y - (Globals.MinimapBaseSize.Y/2);
+                    int newX = (int)Math.Round(oldX * Math.Cos (34) + oldY * Math.Sin (34));
+                    int newY = (int)Math.Round (-oldX * Math.Sin (34) + oldY * Math.Cos (34));
+
+                    anchor.X += newX;
+                    anchor.Y += newY;
+                } else {
+                    anchor.X = (_screen.WorkingArea.Width / 2) - Globals.PlayerCoordinatesOnMap.X;
+                    anchor.Y = (_screen.WorkingArea.Height / 2) - Globals.PlayerCoordinatesOnMap.Y;
+                }
             }
 
             e.Graphics.DrawImage(gameMap, anchor);

@@ -19,7 +19,8 @@ namespace D2RAssist.Helpers
             GameObject.InifussTree,
             GameObject.CairnStoneAlpha,
             GameObject.WirtCorpse,
-            GameObject.HellForge
+            GameObject.HellForge,
+            GameObject.NihlathakWildernessStartPosition,
         };
         
         private static readonly HashSet<GameObject> GoodChests = new HashSet<GameObject>

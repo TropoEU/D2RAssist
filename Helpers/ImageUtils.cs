@@ -26,12 +26,12 @@ namespace D2RAssist.Helpers
 {
     public static class ImageUtils
     {
-        public static Bitmap RotateImage(Image inputImage, float angleDegrees, bool upsizeOk, bool clipOk,
-            Color backgroundColor)
+        public static (Bitmap, Point) RotateImage(Image inputImage, float angleDegrees, bool upsizeOk, bool clipOk,
+            Color backgroundColor, Point localPlayerPosition)
         {
             // Test for zero rotation and return a clone of the input image
             if (angleDegrees == 0f)
-                return (Bitmap)inputImage.Clone();
+                return ((Bitmap)inputImage.Clone(), localPlayerPosition);
 
             // Set up old and new image dimensions, assuming upsizing not wanted and clipping OK
             int oldWidth = inputImage.Width;
@@ -77,19 +77,30 @@ namespace D2RAssist.Helpers
                     graphicsObject.Clear(backgroundColor);
 
                 // Set up the built-in transformation matrix to do the rotation and maybe scaling
-                graphicsObject.TranslateTransform(newWidth / 2f, newHeight / 2f);
+                graphicsObject.TranslateTransform (newWidth / 2f, newHeight / 2f);
 
                 if (scaleFactor != 1f)
                     graphicsObject.ScaleTransform(scaleFactor, scaleFactor);
 
                 graphicsObject.RotateTransform(angleDegrees);
-                graphicsObject.TranslateTransform(-oldWidth / 2f, -oldHeight / 2f);
+                graphicsObject.TranslateTransform (-oldWidth / 2f, -oldHeight / 2f);
+
+
+                double angleRadians = angleDegrees * Math.PI / 180d;
+                double cos = Math.Abs(Math.Cos(angleRadians));
+                double sin = Math.Abs(Math.Sin(angleRadians));
+
+                int localPlayerPositionXFromCenter = localPlayerPosition.X - oldWidth / 2;
+                int localPlayerPositionYFromCenter = localPlayerPosition.Y - oldHeight / 2;
+
+                localPlayerPosition.X = (int)(-localPlayerPositionYFromCenter * sin + localPlayerPositionXFromCenter * cos) + newWidth / 2;
+                localPlayerPosition.Y = (int)(localPlayerPositionYFromCenter * cos + localPlayerPositionXFromCenter * sin) + newHeight / 2;
 
                 // Draw the result
                 graphicsObject.DrawImage(inputImage, 0, 0);
             }
 
-            return newBitmap;
+            return (newBitmap, localPlayerPosition);
         }
 
         public static (Bitmap, Point) CropBitmap(Bitmap originalBitmap)
@@ -132,10 +143,20 @@ namespace D2RAssist.Helpers
         /// <param name="width">The width to resize to.</param>
         /// <param name="height">The height to resize to.</param>
         /// <returns>The resized image.</returns>
-        public static Bitmap ResizeImage(Image image, int width, int height)
+        public static (Bitmap, Point) ResizeImage(Image image, double multiplier, Point localPlayerPosition)
         {
+            int width = (int)(image.Width * multiplier);
+            int height = (int)(image.Height * multiplier);
+
+            localPlayerPosition.X = (int)(localPlayerPosition.X * multiplier);
+            localPlayerPosition.Y = (int)(localPlayerPosition.Y * multiplier);
+
             var destRect = new Rectangle(0, 0, width, height);
             var destImage = new Bitmap(width, height);
+
+            float imageResolution = (float)Math.Min(image.Width, image.Height) / Math.Max(image.Width, image.Height);
+            
+
 
             destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
@@ -154,7 +175,7 @@ namespace D2RAssist.Helpers
                 }
             }
 
-            return destImage;
+            return (destImage, localPlayerPosition);
         }
 
         public static Bitmap CreateFilledRectangle(Color color, int width, int height)

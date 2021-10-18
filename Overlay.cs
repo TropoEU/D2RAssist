@@ -155,17 +155,34 @@ namespace D2RAssist
 
             UpdateLocation();
 
-            Bitmap gameMap = _compositor.Compose(_currentGameData);
+            (Bitmap gameMap, Point localPlayerPosition) = _compositor.Compose (_currentGameData);
             var anchor = new Point(0, 0);
-            switch (Settings.Map.Position)
-            {
-                case MapPosition.TopRight:
-                    anchor = new Point(_screen.WorkingArea.Width - gameMap.Width, 0);
-                    break;
-                case MapPosition.TopLeft:
-                    anchor = new Point(0, 0);
-                    break;
+            if (Settings.Map.AutoScroll) {
+                switch (Settings.Map.Position) {
+                    case MapPosition.TopRight:
+                        anchor = new Point (_screen.WorkingArea.Width - Settings.Map.Size / 2 - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
+                        break;
+                    case MapPosition.TopLeft:
+                        anchor = new Point (Settings.Map.Size / 2 - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
+                        break;
+                    case MapPosition.TopCenter:
+                        anchor = new Point (_screen.WorkingArea.Width / 2 - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
+                        break;
+                }
+            } else {
+                switch (Settings.Map.Position) {
+                    case MapPosition.TopRight:
+                        anchor = new Point (_screen.WorkingArea.Width - gameMap.Width, 0);
+                        break;
+                    case MapPosition.TopLeft:
+                        anchor = new Point (0, 0);
+                        break;
+                    case MapPosition.TopCenter:
+                        anchor = new Point (_screen.WorkingArea.Width / 2 - gameMap.Width / 2, 0);
+                        break;
+                }
             }
+            
 
             e.Graphics.DrawImage(gameMap, anchor);
         }

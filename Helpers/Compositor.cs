@@ -44,7 +44,7 @@ namespace D2RAssist.Helpers
             (_background, _cropOffset) = DrawBackground(areaData, pointOfInterest);
         }
 
-        public Bitmap Compose(GameData gameData)
+        public (Bitmap, Point) Compose(GameData gameData)
         {
             if (gameData.Area != _areaData.Area)
             {
@@ -53,6 +53,7 @@ namespace D2RAssist.Helpers
             }
 
             var image = (Bitmap)_background.Clone();
+            Point localPlayerPosition = gameData.PlayerPosition.OffsetFrom(_areaData.Origin).OffsetFrom(_cropOffset);
 
             using (Graphics imageGraphics = Graphics.FromImage(image))
             {
@@ -60,8 +61,6 @@ namespace D2RAssist.Helpers
                 imageGraphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 imageGraphics.SmoothingMode = SmoothingMode.HighQuality;
                 imageGraphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                Point localPlayerPosition = gameData.PlayerPosition.OffsetFrom(_areaData.Origin).OffsetFrom(_cropOffset);
 
                 if (Settings.Rendering.Player.CanDrawIcon())
                 {
@@ -100,17 +99,16 @@ namespace D2RAssist.Helpers
             // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (multiplier != 1)
             {
-                image = ImageUtils.ResizeImage(image, (int)(image.Width * multiplier),
-                    (int)(image.Height * multiplier));
+                (image, localPlayerPosition) = ImageUtils.ResizeImage(image, multiplier, localPlayerPosition);
             }
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (Settings.Map.Rotate)
             {
-                image = ImageUtils.RotateImage(image, 53, true, false, Color.Transparent);
+                (image, localPlayerPosition) = ImageUtils.RotateImage(image, 34, true, false, Color.Transparent, localPlayerPosition);
             }
 
-            return image;
+            return (image, localPlayerPosition);
         }
 
         private (Bitmap, Point) DrawBackground(AreaData areaData, IReadOnlyList<PointOfInterest> pointOfInterest)

@@ -49,7 +49,7 @@ namespace D2RAssist.Helpers
         public static class MapPointsOfInterest
         {
             public static readonly string[] Chests = { "5", "6", "87", "104", "105", "106", "107", "143", "140", "141", "144", "146", "147", "148", "176", "177", "181", "183", "198", "240", "241", "242", "243", "329", "330", "331", "332", "333", "334", "335", "336", "354", "355", "356", "371", "387", "389", "390", "391", "397", "405", "406", "407", "413", "420", "424", "425", "430", "431", "432", "433", "454", "455", "501", "502", "504", "505", "580", "581", };
-            public static readonly string[] Quests = { "61", "152", "266","357", "356", "354", "355", "376" };
+            public static readonly string[] Quests = { "61", "152", "266","357", "356", "354", "355", "376", "462" };
             public static readonly string[] Waypoints = { "182", "298", "119", "145", "156", "157", "238", "237", "288", "323", "324", "398", "402", "429", "494", "496", "511", "539", "59", "60", "100" };
             public static readonly string[] TalTombs = { "66", "67", "68", "69", "70", "71", "72" };
         }
@@ -122,6 +122,7 @@ namespace D2RAssist.Helpers
             int miniMapPlayerX = (int)((Globals.CurrentGameData.PlayerX - mapData.levelOrigin.x) * multiplier);
             int miniMapPlayerY = (int)((Globals.CurrentGameData.PlayerY - mapData.levelOrigin.y) * multiplier);
             updatedMap = ImageManipulation.ResizeImage((Bitmap)CachedBackground.Clone(), (int)(CachedBackground.Width * multiplier), (int)(CachedBackground.Height * multiplier));
+
             CachedBackgroundGraphics = Graphics.FromImage(updatedMap);
             Globals.MinimapPlayerPosition = new Point (miniMapPlayerX, miniMapPlayerY);
             Globals.MinimapBaseSize = new Point ((int)(CachedBackground.Width * multiplier), (int)(CachedBackground.Height * multiplier));
@@ -329,6 +330,9 @@ namespace D2RAssist.Helpers
                 string objName = Enum.GetName(typeof(Game.GameObject), Int32.Parse(objectKey));
                 if (objName.Contains("Waypoint")) objName = "Waypoint";
                 minimap.DrawString(objName, drawFont, drawBrush, rectangleF, drawFormat);
+            }
+            if (objectType == "Npc") {
+                
             }
         }
     }

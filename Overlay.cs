@@ -160,10 +160,10 @@ namespace D2RAssist
             if (Settings.Map.AutoScroll) {
                 switch (Settings.Map.Position) {
                     case MapPosition.TopRight:
-                        anchor = new Point (_screen.WorkingArea.Width - Settings.Map.Size / 2 - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
+                        anchor = new Point (_screen.WorkingArea.Width - Settings.Map.Size - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
                         break;
                     case MapPosition.TopLeft:
-                        anchor = new Point (Settings.Map.Size / 2 - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
+                        anchor = new Point (Settings.Map.Size - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);
                         break;
                     case MapPosition.TopCenter:
                         anchor = new Point (_screen.WorkingArea.Width / 2 - localPlayerPosition.X, Settings.Map.Size / 2 - localPlayerPosition.Y);

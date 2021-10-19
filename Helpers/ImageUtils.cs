@@ -154,10 +154,6 @@ namespace D2RAssist.Helpers
             var destRect = new Rectangle(0, 0, width, height);
             var destImage = new Bitmap(width, height);
 
-            float imageResolution = (float)Math.Min(image.Width, image.Height) / Math.Max(image.Width, image.Height);
-            
-
-
             destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
             using (Graphics graphics = Graphics.FromImage(destImage))

@@ -191,6 +191,12 @@ namespace D2RAssist.Helpers
                             g.FillRectangle(new SolidBrush(poiSettings.IconColor), 0, 0, poiSettings.IconSize,
                                 poiSettings.IconSize);
                             break;
+                        case Shape.Cross:
+                            g.FillRectangle (new SolidBrush (poiSettings.IconColor), 0, (int) (poiSettings.IconSize / 3f), poiSettings.IconSize,
+                                (poiSettings.IconSize / 3f));
+                            g.FillRectangle (new SolidBrush (poiSettings.IconColor), (int)(poiSettings.IconSize / 3f), 0, (int)(poiSettings.IconSize / 3f),
+                                poiSettings.IconSize);
+                            break;
                     }
                 }
 

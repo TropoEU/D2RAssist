@@ -38,7 +38,8 @@ namespace D2RAssist.Types
     {
         None,
         Rectangle,
-        Ellipse
+        Ellipse,
+        Cross
     }
 
     public static class Settings

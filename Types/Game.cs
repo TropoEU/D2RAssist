@@ -1,7 +1,7 @@
 ﻿/**
  *   Copyright (C) 2021 okaygo, OneXDeveloper
  *
- *   https://github.com/misterokaygo/D2RAssist/
+ *   https://github.com/misterokaygo/MapAssist/
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D2RAssist.Types
+namespace MapAssist.Types
 {
     public static class Game
     {

@@ -38,7 +38,8 @@ namespace MapAssist.Helpers
             GameObject.InifussTree,
             GameObject.CairnStoneAlpha,
             GameObject.WirtCorpse,
-            GameObject.HellForge
+            GameObject.HellForge,
+            GameObject.NihlathakWildernessStartPosition, //Nihlathak
         };
         
         private static readonly HashSet<GameObject> GoodChests = new HashSet<GameObject>
@@ -169,6 +170,20 @@ namespace MapAssist.Helpers
                             Label = obj.ToString(),
                             Position = point,
                             RenderingSettings = Settings.Rendering.SuperChest
+                        });
+                    }
+                }
+                //Lower Kurast Exception (draw arrows to chests)
+                //Useful mostly if you're in Overlay mode and the chests are far away
+                if(areaData.Area == Area.LowerKurast && obj == GameObject.GoodChest)
+                {
+                    foreach (Point point in points)
+                    {
+                        pointOfInterest.Add(new PointOfInterest
+                        {
+                            Label = obj.ToString(),
+                            Position = point,
+                            RenderingSettings = Settings.Rendering.Quest
                         });
                     }
                 }
